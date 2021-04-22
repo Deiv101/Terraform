@@ -1,10 +1,10 @@
 # Configure the AWS Provider
 provider "aws" {
-  region     = "us-east-1"
-  access_key = "my_key"
-  secret_key = "my_secret_key"
+  region     = "us-east-1" # server location
+  access_key = "my_key" # access key assigned by AWS
+  secret_key = "my_secret_key" # Secret key that comes with the above(Private)
 }
-
+#####################################################################################
 resource "aws_vpc" "first-vpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
@@ -41,7 +41,9 @@ resource "aws_subnet" "subnet-2" {
 ####################################################################################>
 ##################### Terraform Project Walkthrough#################################>
 ####################################################################################>
+
 # 1. Create vpc
+
  resource "aws_vpc" "prod-vpc" {
   cidr_block = "10.0.0.0/16"
   
@@ -51,6 +53,7 @@ resource "aws_subnet" "subnet-2" {
 }
 
 # 2. Create Internet Gateway
+
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.prod-vpc.id
 
@@ -60,6 +63,7 @@ resource "aws_internet_gateway" "gw" {
 }
 
 # 3. Create Custom Route Table
+
 resource "aws_route_table" "prod-route-table" {
   vpc_id = aws_vpc.prod-vpc.id
 
@@ -78,6 +82,7 @@ resource "aws_route_table" "prod-route-table" {
   }
 }
 # 4. Create a Subnet
+
 resource "aws_subnet" "subnet-one" {
   vpc_id     = aws_vpc.prod-vpc.id
   cidr_block = "10.0.1.0/24" 
@@ -88,12 +93,14 @@ resource "aws_subnet" "subnet-one" {
 }
 
 # 5. Associate subnet with Route table
+
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.subnet-one.id
   route_table_id = aws_route_table.prod-route-table.id
 }
 
 # 6. Create Security Group to allow port 22, 80, 443
+
 resource "aws_security_group" "allow_web" {
   name        = "allow_web_traffic"
   description = "Allow Web inbound traffic"
@@ -183,3 +190,4 @@ resource "aws_instance" "web-server-instance"{
     }
 
 }
+#####################################################################################
