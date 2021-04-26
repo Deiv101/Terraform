@@ -4,7 +4,7 @@ provider "aws" {
   access_key = "my_key" # access key assigned by AWS
   secret_key = "my_secret_key" # Secret key that comes with the above(Private)
 }
-#####################################################################################
+##################################################################################################################################################################
 resource "aws_vpc" "first-vpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
